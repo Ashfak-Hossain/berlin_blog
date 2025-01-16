@@ -3,22 +3,19 @@ import BlogRenderer from '@/components/blog/BlogRenderer';
 import PageHead from '@/components/blog/PageHead';
 import { fetchBlogData } from '@/lib/blogService';
 import notion from '@/lib/notion';
+import { BlogHeaderData } from '@/lib/notionUtils';
 import React from 'react';
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const slug = (await params).slug;
-  const data = await fetchBlogData(slug);
+  const data: BlogHeaderData[] = await fetchBlogData(slug);
 
-  if (data.results.length === 0) {
+  if (data.length === 0) {
     return <NotFound />;
   }
 
-  const title = data.results[0].properties.Name.title[0].plain_text;
-  const pageID = data.results[0].id.replace(/-/g, '');
-  const coverUrl =
-    data.results[0].cover.type === 'external'
-      ? data.results[0].cover.external.url
-      : data.results[0].cover.file.url;
+  const { title, coverUrl, pageID } = data[0];
+
   const recordMap = await notion.getPage(pageID);
 
   return (

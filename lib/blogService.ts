@@ -1,5 +1,9 @@
 import { client } from '@/lib/notion';
-import { formatBlogData, BlogData } from '@/lib/notionUtils';
+import { formatBlogData, BlogData, formatHeaderData } from '@/lib/notionUtils';
+import {
+  PageObjectResponse,
+  DatabaseObjectResponse,
+} from '@notionhq/client/build/src/api-endpoints';
 
 export const fetchFeaturedBlogs = async (): Promise<BlogData[]> => {
   const response = await client.databases.query({
@@ -26,7 +30,7 @@ export const fetchFeaturedBlogs = async (): Promise<BlogData[]> => {
 };
 
 export const fetchBlogData = async (slug: string) => {
-  return await client.databases.query({
+  const response = await client.databases.query({
     database_id: process.env.NOTION_DATABASE_ID!,
     filter: {
       and: [
@@ -45,6 +49,12 @@ export const fetchBlogData = async (slug: string) => {
       ],
     },
   });
+
+  const filteredResults = response.results.filter(
+    (result): result is PageObjectResponse | DatabaseObjectResponse =>
+      'properties' in result
+  );
+  return formatHeaderData(filteredResults);
 };
 
 export const fetchAllBlogs = async (): Promise<BlogData[]> => {
