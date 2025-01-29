@@ -10,6 +10,7 @@ const Page = async () => {
   const blogDataList = data.map((blog: BlogData) => ({
     title: blog.title,
     slug: blog.slug,
+    tags: blog.tags,
   }));
 
   return (
@@ -17,10 +18,11 @@ const Page = async () => {
       {/* Section Header */}
       <div className="space-y-10 py-8">
         <SectionTitle className="text-left text-4xl md:text-5xl">
-          Competitive Programming
+          Table Of Contents
         </SectionTitle>
         {/* Blog Titles List */}
         <BlogList blogData={blogDataList} />
+        {not}
       </div>
     </SectionContainer>
   );
