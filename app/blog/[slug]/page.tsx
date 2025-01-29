@@ -4,7 +4,6 @@ import PageHead from '@/components/blog/PageHead';
 import { fetchBlogData } from '@/lib/blogService';
 import notion from '@/lib/notion';
 import { BlogHeaderData } from '@/lib/notionUtils';
-import React from 'react';
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const slug = (await params).slug;
