@@ -22,7 +22,6 @@ const Page = async () => {
         </SectionTitle>
         {/* Blog Titles List */}
         <BlogList blogData={blogDataList} />
-        {not}
       </div>
     </SectionContainer>
   );
