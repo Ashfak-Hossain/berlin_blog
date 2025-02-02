@@ -1,4 +1,4 @@
-import BlogList from '@/components/blog-list/BlogList';
+import BlogList from '@/components/table-of-contents/Table-of-contents';
 import SectionContainer from '@/components/common/SectionContainer';
 import SectionTitle from '@/components/Typography/SectionTitle';
 import { fetchAllBlogs } from '@/lib/blogService';
