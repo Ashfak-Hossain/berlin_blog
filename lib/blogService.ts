@@ -1,9 +1,15 @@
-import { client } from '@/lib/notion';
-import { formatBlogData, BlogData, formatHeaderData } from '@/lib/notionUtils';
+import notion, { client } from '@/lib/notion';
+import {
+  formatBlogData,
+  BlogData,
+  formatHeaderData,
+  BlogHeaderData,
+} from '@/lib/notionUtils';
 import {
   PageObjectResponse,
   DatabaseObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
+import { cache } from 'react';
 
 export const fetchFeaturedBlogs = async (): Promise<BlogData[]> => {
   const response = await client.databases.query({
@@ -29,33 +35,30 @@ export const fetchFeaturedBlogs = async (): Promise<BlogData[]> => {
   return formatBlogData(response.results);
 };
 
-export const fetchBlogData = async (slug: string) => {
-  const response = await client.databases.query({
-    database_id: process.env.NOTION_DATABASE_ID!,
-    filter: {
-      and: [
-        {
-          property: 'Slug',
-          rich_text: {
-            equals: slug,
-          },
+export const fetchBlogData = cache(
+  async (slug: string): Promise<BlogHeaderData[]> => {
+    try {
+      const response = await client.databases.query({
+        database_id: process.env.NOTION_DATABASE_ID!,
+        filter: {
+          and: [
+            { property: 'Slug', rich_text: { equals: slug } },
+            { property: 'Public', checkbox: { equals: true } },
+          ],
         },
-        {
-          property: 'Public',
-          checkbox: {
-            equals: true,
-          },
-        },
-      ],
-    },
-  });
+      });
 
-  const filteredResults = response.results.filter(
-    (result): result is PageObjectResponse | DatabaseObjectResponse =>
-      'properties' in result
-  );
-  return formatHeaderData(filteredResults);
-};
+      const filteredResults = response.results.filter(
+        (result): result is PageObjectResponse | DatabaseObjectResponse =>
+          'properties' in result
+      );
+      return formatHeaderData(filteredResults);
+    } catch (error) {
+      console.error('Error fetching blog data:', error);
+      return [];
+    }
+  }
+);
 
 export const fetchAllBlogs = async (): Promise<BlogData[]> => {
   const response = await client.databases.query({
@@ -76,3 +79,12 @@ export const fetchAllBlogs = async (): Promise<BlogData[]> => {
 
   return formatBlogData(response.results);
 };
+
+export const fetchRecordMap = cache(async (pageID: string) => {
+  try {
+    return await notion.getPage(pageID);
+  } catch (error) {
+    console.error('Error fetching Notion page data:', error);
+    return null;
+  }
+});

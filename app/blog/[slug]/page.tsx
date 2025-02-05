@@ -1,8 +1,7 @@
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import NotFound from '@/app/not-found';
-import { fetchBlogData } from '@/lib/blogService';
-import notion from '@/lib/notion';
+import { fetchBlogData, fetchRecordMap } from '@/lib/blogService';
 import { BlogHeaderData } from '@/lib/notionUtils';
 import BlogLoadingSkeleton from '@/components/blog/BlogLoadingSkeleton';
 
@@ -15,7 +14,17 @@ const Page = async ({ params }: { params: { slug: string } }) => {
   if (data.length === 0) return <NotFound />;
 
   const { title, coverUrl, pageID } = data[0];
-  const recordMap = await notion.getPage(pageID);
+  const recordMap = await fetchRecordMap(pageID);
+
+  if (!recordMap) {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-center">
+        <p className="text-xl font-semibold text-gray-700 dark:text-gray-300">
+          Error loading content. Please try again later.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <main className="flex flex-col items-center">
