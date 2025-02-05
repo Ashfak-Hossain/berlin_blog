@@ -1,28 +1,30 @@
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import NotFound from '@/app/not-found';
-import BlogRenderer from '@/components/blog/BlogRenderer';
-import PageHead from '@/components/blog/PageHead';
 import { fetchBlogData } from '@/lib/blogService';
 import notion from '@/lib/notion';
 import { BlogHeaderData } from '@/lib/notionUtils';
+import BlogLoadingSkeleton from '@/components/blog/BlogLoadingSkeleton';
 
-const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
-  const slug = (await params).slug;
-  const data: BlogHeaderData[] = await fetchBlogData(slug);
+const BlogRenderer = dynamic(() => import('@/components/blog/BlogRenderer'));
+const PageHead = dynamic(() => import('@/components/blog/PageHead'));
 
-  if (data.length === 0) {
-    return <NotFound />;
-  }
+const Page = async ({ params }: { params: { slug: string } }) => {
+  const data: BlogHeaderData[] = await fetchBlogData(params.slug);
+
+  if (data.length === 0) return <NotFound />;
 
   const { title, coverUrl, pageID } = data[0];
-
   const recordMap = await notion.getPage(pageID);
 
   return (
     <main className="flex flex-col items-center">
-      <PageHead title={title} coverUrl={coverUrl} />
-      <BlogRenderer recordMap={recordMap} />
+      <Suspense fallback={<BlogLoadingSkeleton />}>
+        <PageHead title={title} coverUrl={coverUrl} />
+        <BlogRenderer recordMap={recordMap} />
+      </Suspense>
     </main>
   );
 };
 
-export default page;
+export default Page;

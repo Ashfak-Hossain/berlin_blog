@@ -13,22 +13,22 @@ const PageHead = async ({ title, coverUrl }: PageHeadProps) => {
   const { base64 } = await getPlaiceholder(buffer);
 
   return (
-    <header className="mt-16 flex flex-col items-center gap-6 px-2 py-5 text-center">
+    <header className="mt-16 flex max-w-4xl flex-col items-start gap-5 px-4 py-5 sm:px-8">
       {/* Blog Cover Image */}
-      <div className="h-56 max-w-6xl overflow-hidden rounded-lg shadow-lg">
+      <div className="relative h-28 w-full overflow-hidden rounded-xl shadow-lg sm:h-32 md:h-36 lg:h-40 xl:h-44">
         <Image
           src={coverUrl}
           alt={title}
           width={1200}
-          height={600}
-          className="object-cover"
+          height={400}
+          className="h-full w-full object-cover object-center"
           blurDataURL={base64}
           placeholder="blur"
         />
       </div>
 
       {/* Blog Title */}
-      <h1 className="text-4xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-5xl">
+      <h1 className="max-w-6xl text-3xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-4xl">
         {title}
       </h1>
     </header>
