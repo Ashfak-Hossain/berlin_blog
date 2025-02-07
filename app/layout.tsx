@@ -30,9 +30,11 @@ export default function RootLayout({
       <body
         className={`${fonts.geistSans.className} ${fonts.ubuntu.className} antialiased`}
       >
-        <Navbar />
-        <Providers>{children}</Providers>
-        <Footer />
+        <Providers>
+          <Navbar />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

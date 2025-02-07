@@ -5,6 +5,7 @@ import { NotionComponents, NotionRenderer } from 'react-notion-x';
 import dynamic from 'next/dynamic';
 import { formatDate } from 'notion-utils';
 import { ExtendedRecordMap } from 'notion-types';
+import { useTheme } from 'next-themes';
 
 const Code = dynamic(() =>
   import('react-notion-x/build/third-party/code').then(async (m) => {
@@ -106,14 +107,14 @@ const BlogRenderer = ({ recordMap }: { recordMap: ExtendedRecordMap }) => {
     []
   );
 
-  // const { theme } = useTheme();
-  // const isDark: boolean = theme === 'dark' || theme === 'system';
+  const { theme } = useTheme();
+  const isDark: boolean = theme === 'dark' || theme === 'system';
 
   return (
     <NotionRenderer
       recordMap={recordMap}
       components={components}
-      darkMode={true}
+      darkMode={isDark}
     />
   );
 };
