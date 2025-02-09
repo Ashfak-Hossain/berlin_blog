@@ -7,7 +7,7 @@ import BlogLoadingSkeleton from '@/components/blog/BlogLoadingSkeleton';
 const BlogRenderer = dynamic(() => import('@/components/blog/BlogRenderer'));
 const PageHead = dynamic(() => import('@/components/blog/PageHead'));
 
-const Page = async ({ params }: { params: { slug: string } }) => {
+const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   try {
     const { slug } = await params;
 
