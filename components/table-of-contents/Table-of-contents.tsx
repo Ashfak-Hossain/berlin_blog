@@ -50,6 +50,7 @@ const TableOfContents = ({ blogData }: BlogListProps) => {
                   className="relative text-lg font-medium text-gray-800 transition-colors hover:text-indigo-500 dark:text-gray-300 dark:hover:text-indigo-400 md:text-xl"
                 >
                   <Link
+                    prefetch={true}
                     href={`/blog/${blog.slug}`}
                     className="relative block py-1 transition-colors hover:text-indigo-500 dark:hover:text-indigo-400"
                   >
