@@ -10,7 +10,6 @@ const NotFound = () => {
         <Image
           src="/404.png"
           alt="404 - Page Not Found"
-          layout="responsive"
           width={600}
           height={600}
           className="object-contain"

@@ -52,6 +52,12 @@ export const fetchBlogData = cache(
         (result): result is PageObjectResponse | DatabaseObjectResponse =>
           'properties' in result
       );
+
+      if (filteredResults.length === 0) {
+        console.warn(`No blog found for slug: ${slug}`);
+        return [];
+      }
+
       return formatHeaderData(filteredResults);
     } catch (error) {
       console.error('Error fetching blog data:', error);
@@ -82,7 +88,8 @@ export const fetchAllBlogs = async (): Promise<BlogData[]> => {
 
 export const fetchRecordMap = cache(async (pageID: string) => {
   try {
-    return await notion.getPage(pageID);
+    const data = await notion.getPage(pageID);
+    return data;
   } catch (error) {
     console.error('Error fetching Notion page data:', error);
     return null;
