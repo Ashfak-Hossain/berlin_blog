@@ -4,8 +4,12 @@ import NotFound from '@/app/not-found';
 import { fetchBlogData, fetchRecordMap } from '@/lib/blogService';
 import BlogLoadingSkeleton from '@/components/blog/BlogLoadingSkeleton';
 
-const BlogRenderer = dynamic(() => import('@/components/blog/BlogRenderer'));
-const PageHead = dynamic(() => import('@/components/blog/PageHead'));
+const BlogRenderer = dynamic(() => import('@/components/blog/BlogRenderer'), {
+  ssr: false,
+});
+const PageHead = dynamic(() => import('@/components/blog/PageHead'), {
+  ssr: true,
+});
 
 const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const slug = (await params).slug;

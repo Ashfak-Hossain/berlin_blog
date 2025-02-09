@@ -1,6 +1,6 @@
 import SectionTitle from '@/components/Typography/SectionTitle';
-import { TreeListItem } from '../TreeList';
-import BlogCard from './BlogCard';
+import { TreeListItem } from '@/components/TreeList';
+import BlogCard from '@/components/FeatBlogList/BlogCard';
 import { BlogData } from '@/lib/notionUtils';
 
 interface FeatBlogListProps {
@@ -12,7 +12,6 @@ const FeatBlogList = ({ blogs }: FeatBlogListProps) => {
     <section className="mx-auto max-w-4xl py-5">
       <div className="flex flex-col p-3">
         <SectionTitle>Decoded Thoughts</SectionTitle>
-
         <div className="ml-4 mt-5">
           {blogs.map((blog) => (
             <TreeListItem key={blog.slug}>
