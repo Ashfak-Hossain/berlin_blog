@@ -3,13 +3,6 @@ import { fetchAllBlogs } from '@/lib/blogService';
 import { BlogData } from '@/lib/notionUtils';
 import Link from 'next/link';
 
-// interface BlogListProps {
-//   blogData: {
-//     title: string;
-//     slug: string;
-//     tags: string[];
-//   }[];
-// }
 const categories: Record<string, string> = {
   'computer science': 'Computer Science',
   cp: 'Competitive Programming',
