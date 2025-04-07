@@ -110,9 +110,6 @@ const BlogRenderer = ({ recordMap }: { recordMap: ExtendedRecordMap }) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
-  console.log('theme', theme);
-  console.log('isDark', isDark);
-
   return (
     <NotionRenderer
       recordMap={recordMap}

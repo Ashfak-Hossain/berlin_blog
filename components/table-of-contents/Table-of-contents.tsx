@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { fetchAllBlogs } from '@/lib/blogService';
+import { BlogData } from '@/lib/notionUtils';
 import Link from 'next/link';
 
-interface BlogListProps {
-  blogData: {
-    title: string;
-    slug: string;
-    tags: string[];
-  }[];
-}
-
+// interface BlogListProps {
+//   blogData: {
+//     title: string;
+//     slug: string;
+//     tags: string[];
+//   }[];
+// }
 const categories: Record<string, string> = {
   'computer science': 'Computer Science',
   cp: 'Competitive Programming',
@@ -18,9 +19,22 @@ const categories: Record<string, string> = {
   miscellaneous: 'Miscellaneous',
 };
 
-const TableOfContents = ({ blogData }: BlogListProps) => {
+async function getBlogData() {
+  const data = await fetchAllBlogs();
+
+  return data.map((blog: BlogData) => ({
+    title: blog.title,
+    slug: blog.slug,
+    tags: blog.tags,
+  }));
+}
+
+// const TableOfContents = ({ blogData }: BlogListProps) => {
+const TableOfContents = async () => {
   const categorizedBlogs = new Map<string, { title: string; slug: string }[]>();
   Object.keys(categories).forEach((key) => categorizedBlogs.set(key, []));
+
+  const blogData = await getBlogData();
 
   blogData.forEach((blog) => {
     const category =

@@ -18,7 +18,9 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       ),
     ]);
 
-    if (data.length === 0 || !recordMap) return <NotFound />;
+    if (!data) return <NotFound />;
+    if (data.length === 0) return <NotFound />;
+    if (!recordMap) return <NotFound />;
 
     const { title, coverUrl } = data[0];
 
